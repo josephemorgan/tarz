@@ -5,7 +5,7 @@ from tarz import Tarz
 intents = discord.Intents.default()
 intents.members = True
 client = discord.Client(intents=intents)
-tarz = Tarz(client, "?", 750078591374721235)
+tarz = Tarz(attached_client = client, guild_id = 714930784045105173, rules_message_id = 750078591374721235, command_prefix = "?")
 
 # this is a ready function
 @client.event
