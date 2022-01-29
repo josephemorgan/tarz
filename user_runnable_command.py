@@ -1,9 +1,11 @@
 import logging
 import time
 import discord
+import os
 
 class UserRunnableCommand:
     command_prefix = "?"
+    readme_loc = os.path.join(os.path.dirname(__file__), './README.md')
 
 
     def __init__(self, bot_instance, message: discord.Message):
@@ -25,7 +27,7 @@ class UserRunnableCommand:
         command = message.content.split()
         if command[0][1:] == "purge":
             self.command = self.__purge;
-        elif command[0][1:] in ["man", "help"]:
+        elif command[0][1:] in ["man", "woman", "help"]:
             self.command = self.__man
         elif command[0][1:] == "addme":
             self.command = self.__add_class_role
@@ -40,7 +42,7 @@ class UserRunnableCommand:
         self.args = message.content.split()[1:]
 
         # Cache the help text
-        readme = open("./README.md", "r")
+        readme = open(UserRunnableCommand.readme_loc, "r")
         help_text_lines = readme.readlines()
         self.help_text = ""
         for line in help_text_lines:
