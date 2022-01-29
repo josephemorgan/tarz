@@ -1,13 +1,12 @@
 import logging
 import time
 import discord
-from tarz import Tarz
 
 class UserRunnableCommand:
     command_prefix = "?"
 
 
-    def __init__(self, bot_instance: Tarz, message: discord.Message):
+    def __init__(self, bot_instance, message: discord.Message):
         self.bot = bot_instance
         # Store reference to message
         self.message_reference = discord.MessageReference.from_message(message)
@@ -22,7 +21,7 @@ class UserRunnableCommand:
         self.channel = message.channel
 
         # Store the associated function
-        command = discord.Message.content.split()
+        command = message.content.split()
         if command[0][1:] == "purge":
             self.command = self.__purge;
         elif command[0][1:] in ["man", "help"]:
@@ -39,7 +38,13 @@ class UserRunnableCommand:
 
         # Cache the help text
         readme = open("./README.md", "r")
-        self.help_text = readme.read()
+        help_text_lines = readme.readlines()
+        self.help_text = ""
+        for line in help_text_lines:
+            if "Setting up" in line:
+                break
+            else:
+               self.help_text += line
 
 
     async def run(self) -> None:
@@ -56,15 +61,15 @@ class UserRunnableCommand:
             await self.channel.send("https://c.tenor.com/BDfaxXA3WfAAAAAM/thanos-thanos-dance.gif");
             time.sleep(10)
             await self.channel.purge()
-        elif self.args.isnumeric():
-            await self.channel.purge(limit=int(self.args) + 1)
+        elif self.args[0].isnumeric():
+            await self.channel.purge(limit=int(self.args[0] + 1))
         else:
             await self.channel.send(f"That doesn't seem to be a valid purge command.")
 
 
     async def __add_class_role(self) -> None:
         if "CLASSES" in self.channel.category.name:
-            guild = Tarz.client.get_guild(Tarz.guild_id)
+            guild = tarz.Tarz.client.get_guild(tarz.Tarz.guild_id)
             role_to_add = None
             if (guild) != None:
                 for existing_role in guild.roles:

@@ -2,7 +2,7 @@ import discord
 import os
 import logging
 from dotenv import load_dotenv
-from UserRunnableCommand import UserRunnableCommand
+import user_runnable_command as urc
 
 
 class Tarz:
@@ -43,6 +43,6 @@ class Tarz:
             logging.info(f'MSG - {message.channel.name} : {message.author} > {message.content}')
         except AttributeError:
             logging.error(f'AttributeError')
-        if UserRunnableCommand.is_command(message.content):
-            command = UserRunnableCommand(self, message);
+        if urc.UserRunnableCommand.is_command(message.content):
+            command = urc.UserRunnableCommand(self, message);
             await command.run()
